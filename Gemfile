@@ -1,5 +1,5 @@
 source "https://rubygems.org"
 gem "sinatra"
-gem "sinatra-mongo-config"
+gem "sinatra-mongo"
 gem "mongo"
 gem "bson"
