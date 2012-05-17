@@ -5,7 +5,7 @@ configure do
 end
 
 get '/' do
-	erb :signup
+    erb :signup
 end
 
 get '/login' do
