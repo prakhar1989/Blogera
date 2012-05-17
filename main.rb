@@ -3,13 +3,17 @@ require 'sinatra/mongo'
 
 configure do
     set :public_folder, File.dirname(__FILE__) + '/static'
-    set :mongo, 'mongo://localhost:27017/blogtest'
+    set :mongo, 'mongo://localhost:27017/blogera'
 end
 
 puts mongo["testCollection"].insert({"name" => "mongo", "type" => "database", "count" => 1, "info" => { "x" => 203, "y" => "102" }})
 
 get '/' do
     erb :signup
+end
+
+post '/signup' do
+	mongo["users"].insert({"email"=>params[:email],"password"=>params[:password]})
 end
 
 get '/login' do
