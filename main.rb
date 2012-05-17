@@ -8,6 +8,6 @@ get '/' do
     "<a href='/login'>Login</a>"
 end
 
-get '/login' do
+get '/signup' do
     erb :login
 end
