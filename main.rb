@@ -4,10 +4,10 @@ configure do
     set :public_folder, File.dirname(__FILE__) + '/static'
 end
 
-get '/login' do
-	redirect '/signup'
+get '/' do
+	erb :signup
 end
 
-get '/signup' do
+get '/login' do
     erb :login
 end
