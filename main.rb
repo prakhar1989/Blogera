@@ -6,8 +6,6 @@ configure do
     set :mongo, 'mongo://localhost:27017/blogera'
 end
 
-puts mongo["testCollection"].insert({"name" => "mongo", "type" => "database", "count" => 1, "info" => { "x" => 203, "y" => "102" }})
-
 get '/' do
     erb :signup
 end
@@ -20,7 +18,3 @@ get '/login' do
     erb :login
 end
 
-get '/mongo' do
-    my_array = mongo["testCollection"].find_one
-    my_array.map{ |i| i.to_s }.join(",")
-end
