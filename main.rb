@@ -13,7 +13,16 @@ get '/' do
 end
 
 post '/signup' do
-	mongo["users"].insert({"email"=>params[:email],"password"=>params[:password]})
+    if validate_email(params[:email]) and validate_password(params[:password])
+        pw = params[:password]
+        pw_hash = get_hashed_password(params[:password])
+        salt = 4 #some randomly generated number
+        user_token = get_generated_token(params[:email], salt)
+        mongo["users"].insert({"email"=>params[:email],"password_hash"=>pw_hash, "token" => user_token})
+    else
+        #set_flash = "there was an error while registering"
+        redirect('/')
+    end
 end
 
 get '/login' do
