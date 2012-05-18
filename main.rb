@@ -3,6 +3,7 @@ require 'sinatra/mongo'
 require 'rack-flash'
 require 'bcrypt'
 require './lib/validate'
+require 'pry'
 
 configure do
     set :public_folder, File.dirname(__FILE__) + '/static'
@@ -12,6 +13,7 @@ configure do
 end
 
 get '/' do
+    session[:authorized] = false
     erb :signup
 end
 

@@ -5,3 +5,4 @@ gem "mongo"
 gem "rack-flash3"
 gem 'bson_ext'
 gem 'bcrypt-ruby'
+gem "pry"
