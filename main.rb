@@ -55,7 +55,7 @@ end
 
 get '/home' do 
     @user_email = session[:user]
-    if not @user_email
+    if @user_email.nil?
         flash[:error] = "You need to signup first!"
         redirect('/')
     end
