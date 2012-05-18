@@ -2,7 +2,7 @@ require 'sinatra'
 require 'sinatra/mongo'
 require 'rack-flash'
 require 'bcrypt'
-require 'validate'
+require './lib/validate'
 
 configure do
     set :public_folder, File.dirname(__FILE__) + '/static'
