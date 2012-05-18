@@ -53,6 +53,12 @@ post '/login' do
     end
 end
 
+get '/logout' do
+    session.clear
+    flash[:success] = "You have successfully logged out!"
+    redirect('/')
+end
+
 get '/home' do 
     @user_email = session[:user]
     if @user_email.nil?
