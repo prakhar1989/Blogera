@@ -22,8 +22,6 @@ def validate_password(password)
     return true if pass_regex =~ password
 end
 
-puts mongo["testCollection"].insert({"name" => "mongo", "type" => "database", "count" => 1, "info" => { "x" => 203, "y" => "102" }})
-
 get '/' do
     erb :signup
 end
@@ -51,11 +49,17 @@ post '/login' do
     user_email = params[:email]
     user_pass = params[:password]
     user = mongo["users"].find({"email" => user_email})
-    puts user
-    # if user.nil?
-    #     flash[:error] = "Invalid email/password combination"
-    #     redirect('/login')
-    # end
+    if user.count == 0
+        flash[:error] = "Invalid email/password combination"
+        redirect('/login')
+    end
+    puts user.each do |doc|
+        puts doc['email']
+    end
+    
+    # session[:user] = user_email
+    # flash[:success] = "You have successfully registered!"
+    # redirect('/home')
 end
 
 get '/home' do 
