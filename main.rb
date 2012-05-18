@@ -37,18 +37,20 @@ end
 post '/login' do
     user_email = params[:email]
     user_pass = params[:password]
-    user = mongo["users"].find({"email" => user_email})
-    if user.count == 0
+    user_cursor = mongo["users"].find({"email" => user_email})
+    if user_cursor.count == 0
         flash[:error] = "Invalid email/password combination"
         redirect('/login')
     end
-    puts user.each do |doc|
-        puts doc['email']
+    user = user_cursor.to_a[0]
+    if  BCrypt::Password.new(user["password_hash"]) == user_pass
+        session[:user] = user["email"]
+        flash[:success] = "You have successfully logged in!"
+        redirect('/home')
+    else
+        flash[:error] = "Invalid email/password combination"
+        redirect('/login')
     end
-    
-    # session[:user] = user_email
-    # flash[:success] = "You have successfully registered!"
-    # redirect('/home')
 end
 
 get '/home' do 
