@@ -1,9 +1,7 @@
 require 'sinatra'
 require 'sinatra/mongo'
 require 'rack-flash'
-require 'bcrypt'
 require './lib/validate'
-require 'pry'
 
 configure do
     set :public_folder, File.dirname(__FILE__) + '/static'
@@ -19,11 +17,8 @@ end
 
 post '/signup' do
     if validate_email(params[:email]) and validate_password(params[:password])
-        user_email = params[:email]
-        user_pass = params[:password]
-        pw_hash = BCrypt::Password.create(user_pass)
-        mongo["users"].insert({"email"=>user_email,"password_hash"=>pw_hash})
-        session[:user] = user_email
+        register_user(params[:email],params[:password])
+        authorize_user(params[:email],session)
         flash[:success] = "You have successfully registered!"
         redirect('/home')
     else
@@ -37,16 +32,8 @@ get '/login' do
 end
 
 post '/login' do
-    user_email = params[:email]
-    user_pass = params[:password]
-    user_cursor = mongo["users"].find({"email" => user_email})
-    if user_cursor.count == 0
-        flash[:error] = "Invalid email/password combination"
-        redirect('/login')
-    end
-    user = user_cursor.to_a[0]
-    if  BCrypt::Password.new(user["password_hash"]) == user_pass
-        session[:user] = user["email"]
+    if registered_user?(params[:email],params[:password])
+        authorize_user(params[:email],session)
         flash[:success] = "You have successfully logged in!"
         redirect('/home')
     else
@@ -62,10 +49,9 @@ get '/logout' do
 end
 
 get '/home' do 
-    @user_email = session[:user]
-    if @user_email.nil?
+    if !logged_in?(session)
         flash[:error] = "You need to signup first!"
         redirect('/')
     end
-    erb :home
+    erb :home, :locals => { :session => session }
 end
