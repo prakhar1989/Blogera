@@ -1,3 +1,9 @@
+<% if flash[:success] %>
+<div class="alert alert-success">
+  <button class="close" data-dismiss="alert">×</button>
+  <strong>Success!</strong> <%= flash[:success] %>
+</div>
+<% end %>
 <form method='post' class="form-inline well">
   <input name='email' placeholder="email" >
   <input type="password" name='password' placeholder="password">

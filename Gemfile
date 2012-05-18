@@ -2,4 +2,5 @@ source "https://rubygems.org"
 gem "sinatra"
 gem "sinatra-mongo"
 gem "mongo"
-gem "bson"
+gem "rack-flash3"
+gem 'bson_ext'
