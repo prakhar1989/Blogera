@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/mongo'
 require 'rack-flash'
 require 'bcrypt'
+require 'validate'
 
 configure do
     set :public_folder, File.dirname(__FILE__) + '/static'
@@ -9,20 +10,6 @@ configure do
     enable :sessions
     use Rack::Flash, :sweep => true
 end
-
-#TODO: I would ideally want to move these validation functions
-#in a separate file to keep this part clean. Please do it 
-#if you know how to get that done!
-def validate_email(email)
-    email_regex = /^[\S]+@[\S]+\.[\S]+$/
-    return true if email_regex =~ email
-end
-def validate_password(password)
-    pass_regex = /^.{3,20}$/
-    return true if pass_regex =~ password
-end
-
-puts mongo["testCollection"].insert({"name" => "mongo", "type" => "database", "count" => 1, "info" => { "x" => 203, "y" => "102" }})
 
 get '/' do
     erb :signup
