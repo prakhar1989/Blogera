@@ -4,7 +4,13 @@
   <strong>Success!</strong> <%= flash[:success] %>
 </div>
 <% end %>
-<form method='post' class="form-inline well">
+<% if flash[:error] %>
+<div class="alert alert-error">
+  <button class="close" data-dismiss="alert">×</button>
+  <strong>Error!</strong> <%= flash[:error] %>
+</div>
+<% end %>
+<form method='post' action= '/login' class="form-inline well">
   <input name='email' placeholder="email" >
   <input type="password" name='password' placeholder="password">
   <input class="btn primary" type='submit' value='Login!'>
