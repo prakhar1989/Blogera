@@ -88,9 +88,7 @@ get '/home' do
         flash[:error] = "You need to signup first!"
         redirect('/')
     end
-    @user = session[:user]
-    @user_id = session[:uid]
-    @posts_cursor = mongo["posts"].find({:uid => @user_id})
+    @posts_cursor = mongo["posts"].find({:uid => session[:uid]})
     erb :home
 end
 
@@ -110,7 +108,6 @@ post '/new' do
         flash[:error] = "Cant Post Empty Fields!" #TODO: make a flash helper
         redirect('/new')
     end
-    uid = 1 #get uid from session
     content_mkd = RDiscount.new(content).to_html
     mongo["posts"].insert({"uid" =>  session[:uid],
                            "title" => title,

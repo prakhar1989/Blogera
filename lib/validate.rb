@@ -19,8 +19,8 @@ module Sinatra
 		def authorize_user(user,session)
 			session[:user] = user
             #Should this go here?
-            @user_detail = mongo["users"].find({:email => user})
-            session[:uid] = @user_detail.to_a[0]["_id"]
+            user_detail = mongo["users"].find({:email => user})
+            session[:uid] = user_detail.to_a[0]["_id"]
 			session[:authorize] = true
 		end
 		def logged_in?(session)
@@ -34,10 +34,4 @@ module Sinatra
 
 	register Validate
 
-    module ExtraHelpers
-        def add_dummy_posts()
-            puts "cool"
-        end
-    end
-    register ExtraHelpers
 end
