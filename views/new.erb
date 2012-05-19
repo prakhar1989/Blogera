@@ -1,0 +1,30 @@
+<div class="newpost">
+    <form action="/new" method="post" class="form-horizontal">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label" for="input01">Title</label>
+                <div class="controls">
+                    <input type="text" class="input-xlarge" id="input01" name="title">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="textarea">Content</label>
+                <div class="controls">
+                    <textarea name="content" class="input-xlarge" id="textarea" rows="15" cols="40"></textarea>
+                    <p class="help-block">We accept Markdown bitch!</p>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Post!</button>
+                <button class="btn">Cancel</button>
+            </div>
+
+        </fieldset>
+    </form>
+</div>
+<% if flash[:error] %>
+<div class="alert alert-error">
+  <button class="close" data-dismiss="alert">×</button>
+  <strong>Error!</strong> <%= flash[:error] %>
+</div>
+<% end %>

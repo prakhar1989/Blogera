@@ -4,4 +4,18 @@
   <strong>Success!</strong> <%= flash[:success] %>
 </div>
 <% end %>
-<h1>Welcome Aboard <%= session[:user] %></h1> 
+<h1>Welcome Aboard <%= @user %></h1> 
+<% if @posts_cursor.count == 0 %>
+    <p>Looks like you have not added any posts!.<a href="/new">Click here</a>
+    to get started</p> <!-- change the new post url -->
+<% else %>
+    <div class="posts" style="margin-top: 20px">
+    <% @posts_cursor.each do |post| %>
+        <div class="post">
+            <h4><%= post["title"] %></h4>
+            <p><%= post["content"] %></p>
+            <hr>
+        </div>
+    <% end %>
+    </div>
+<% end %>

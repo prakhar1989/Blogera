@@ -10,6 +10,8 @@
   <strong>Error!</strong> <%= flash[:error] %>
 </div>
 <% end %>
+<h5>Connect with <a href="/auth/twitter"><img src="icons/twitter_32.png" /></a>
+or <a href="/auth/facebook"><img src="icons/facebook_32.png" /></a> </h5>
 <form method='post' action= '/login' class="form-inline well">
   <input name='email' placeholder="email" >
   <input type="password" name='password' placeholder="password">
