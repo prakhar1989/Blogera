@@ -9,13 +9,12 @@ require './lib/extra_helpers'
 require 'rdiscount'
 
 configure do
-    # set :public_folder, File.dirname(__FILE__) + '/static'
     set :mongo, 'mongo://localhost:27017/blogera'
     enable :sessions
     use Rack::Flash, :sweep => true
     use OmniAuth::Builder do
-        provider :twitter, 'loCcf78CNJieKohWf5KNCg', 'iPk4PAUEvQ1OPbsJhdei8U52NlhA5Z8N7Mc4DBgV79Q'
         provider :facebook, '351336024898423', '426e74cac68fe2a9182ffe7db3744399'
+        provider :twitter, 'loCcf78CNJieKohWf5KNCg', 'iPk4PAUEvQ1OPbsJhdei8U52NlhA5Z8N7Mc4DBgV79Q'
     end
     get '/stylesheets/:stylesheet.css' do |stylesheet|
         scss :"scss/#{stylesheet}"
