@@ -23,9 +23,9 @@ module Sinatra
 		def logged_in?(session)
 			session[:authorize]
 		end
-		def register_user(email,password)
-			pw_hash = BCrypt::Password.create(password)
-			mongo["users"].insert({"email"=>email,"password_hash"=>pw_hash})
+		def register_user(email,password,provider)
+            pw_hash = BCrypt::Password.create(password) 
+			mongo["users"].insert({"email"=>email,"password_hash"=>pw_hash, "provider"=>provider})
 		end
 	end
 
