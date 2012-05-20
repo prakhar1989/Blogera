@@ -29,10 +29,18 @@ configure do
     end
 end
 
+helpers do 
+    def get_post_permalink(post)
+        #eg: http://blogera.io/prakhar/post/532131323/hello-world
+        post_id = post["_id"]
+        slug = post["title"].downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+        "#{session[:nickname]}/post/#{post_id}/#{slug}"
+    end
+end
+
+
 get '/' do
-    # cleanup_users()
-    # cleanup_posts()
-    session[:authorized] = false
+    session[:authorized] = false if not session[:authorized]
     erb :signup
 end
 
@@ -123,3 +131,8 @@ post '/:name/new' do
     redirect('/'+session[:nickname])
 end
 
+get '/:name/post/:id/*' do
+    @post = mongo["posts"].find_one({:_id => BSON::ObjectId(params[:id].to_str)})
+    @name = params[:name]
+    erb :showpost
+end

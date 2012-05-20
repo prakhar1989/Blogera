@@ -10,6 +10,5 @@ TODO:
 2) Merge new and home erbs. --Done
 3) Route home to /nickname. --Done
 4) Give permanent link to posts using nickname/post-title.
-
-Somehow Layout erb is broken in new.erb please check and correct that if possible.
+5) Layout erb is broken in new.erb please check and correct - Done
 

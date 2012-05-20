@@ -12,7 +12,7 @@
     <div class="posts" style="margin-top: 20px">
     <% @posts_cursor.each do |post| %>
         <div class="post">
-            <h4><%= post["title"] %></h4>
+            <h4><a href="<%= get_post_permalink(post) %>"><%= post["title"] %></a></h4>
             <p><%= post["content"] %></p>
             <hr>
         </div>
