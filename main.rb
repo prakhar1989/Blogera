@@ -19,9 +19,19 @@ configure do
     get '/stylesheets/:stylesheet.css' do |stylesheet|
         scss :"scss/#{stylesheet}"
     end
+    set(:auth) do |*roles| # <- notice the splat here
+      condition do
+        unless logged_in?(session)
+            flash[:error] = "You need to login first!"
+            redirect('/')
+        end
+      end
+    end
 end
 
 get '/' do
+    # cleanup_users()
+    # cleanup_posts()
     session[:authorized] = false
     erb :signup
 end
@@ -29,10 +39,10 @@ end
 post '/signup' do
     if validate_email(params[:email]) and validate_password(params[:password])
         provider = "standard"
-        register_user(params[:email],params[:password], provider)
-        authorize_user(params[:email],session)
+        register_user(params[:email],params[:nickname],params[:password], provider)
+        authorize_user(params[:nickname],session)
         flash[:success] = "You have successfully registered!"
-        redirect('/home')
+        redirect('/'+session[:nickname])
     else
         flash[:error] = "There were errors while submitting your form!"
         redirect('/')
@@ -45,7 +55,7 @@ get '/login' do
         erb :login
     else
         flash[:success] = "You have already logged in!"
-        redirect('/home')
+        redirect('/'+session[:nickname])
     end
 end
 
@@ -53,7 +63,7 @@ post '/login' do
     if registered_user?(params[:email],params[:password])
         authorize_user(params[:email],session)
         flash[:success] = "You have successfully logged in!"
-        redirect('/home')
+        redirect('/'+session[:nickname])
     else
         flash[:error] = "Invalid email/password combination"
         redirect('/login')
@@ -71,9 +81,9 @@ get '/auth/:name/callback' do
     uid = auth["uid"] #TODO: Is it fine to use UID as password?
     nickname = auth["info"]["nickname"]
     provider =  auth["provider"]
-    register_user(nickname, uid, provider)
+    register_user("",nickname, uid, provider)
     authorize_user(nickname, session)
-    redirect('/home')
+    redirect('/'+session[:nickname])
 end
 
 get '/auth/failure' do
@@ -81,27 +91,23 @@ get '/auth/failure' do
     redirect('/')
 end
 
-get '/home' do 
+get '/:name', :auth => ["user"] do
     #TODO: Isn't it wise to make the following check(with the flash) 
     #as a helper which can be called be on each view
-    if !logged_in?(session)
-        flash[:error] = "You need to signup first!"
-        redirect('/')
-    end
     @posts_cursor = mongo["posts"].find({:uid => session[:uid]})
-    erb :home
+    erb :home, :locals => { :session => session }
 end
 
-get '/new' do
+get '/:name/new' do
     #TODO: Isn't it better to make this a helper?(along with flash setting)
     if !logged_in?(session)
         flash[:error] = "You need to signup first!"
         redirect('/')
     end
-    erb :new
+    erb :new, :locals => { :session => session }
 end
 
-post '/new' do
+post '/:name/new' do
     title = params[:title]
     content = params[:content]
     if title.empty? or content.empty?
@@ -114,6 +120,6 @@ post '/new' do
                            "content" => content_mkd,
                            "created_at" => Time.new,
                            "last_modified" => Time.new})
-    redirect('/home')
+    redirect('/'+session[:nickname])
 end
 

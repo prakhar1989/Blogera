@@ -4,9 +4,9 @@
   <strong>Success!</strong> <%= flash[:success] %>
 </div>
 <% end %>
-<h1>Welcome Aboard <%= @user %></h1> 
+<h1>Welcome Aboard <%= session[:nickname] %></h1> 
 <% if @posts_cursor.count == 0 %>
-    <p>Looks like you have not added any posts!.<a href="/new">Click here</a>
+    <p>Looks like you have not added any posts!.<a href=<%= "/"+session[:nickname]+"/new" %> >Click here</a>
     to get started</p> <!-- change the new post url -->
 <% else %>
     <div class="posts" style="margin-top: 20px">
@@ -17,5 +17,6 @@
             <hr>
         </div>
     <% end %>
+    <a class="btn btn-success" href=<%= "/"+session[:nickname]+"/new" %>>Add Post</a>
     </div>
 <% end %>
