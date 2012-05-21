@@ -40,7 +40,7 @@ end
 
 
 get '/' do
-    session[:authorized] = false if not session[:authorized]
+    session[:authorized] = false unless session[:authorized]
     erb :signup
 end
 
