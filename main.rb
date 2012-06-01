@@ -7,6 +7,8 @@ require 'omniauth-twitter'
 require 'omniauth-facebook'
 require './lib/extra_helpers'
 require 'rdiscount'
+require 'eventmachine'
+require 'SmtpRubyServer'
 
 configure do
     set :mongo, 'mongo://localhost:27017/blogera'
@@ -27,6 +29,9 @@ configure do
         end
       end
     end
+    EventMachine::run {
+        EM.start_server '0.0.0.0', 25, SmtpRubyServer
+    }
 end
 
 helpers do 
